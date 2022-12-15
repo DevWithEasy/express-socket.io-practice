@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- tailwindcss cdn -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Socket.io With Express</title>
+  </head>
+  <body class="min-h-screen py-4 bg-gray-300 flex md:justify-center">
+    <div class="relative bg-gray-100 mx-6 w-full md:w-1/2 rounded-md">
+      <div class="">
+        <h1 class="text-2xl text-center">Global Chat</h1>
+        <hr />
+        <div class="h-72 p-4 overflow-x-auto">
+          <ul class="chat"></ul>
+          <p class="feedback"></p>
+        </div>
+        <div class="absolute w-full p-2 bg-gray-400 bottom-0 left-0 rounded-md space-y-2">
+          <input
+            type="text"
+            class="name p-2 w-full rounded focus:outline-none focus:ring-2"
+            placeholder="name"
+          />
+          <div class="w-full flex gap-x-2 rounded-md">
+            <input
+              type="text"
+              class="message px-4 py-2 w-full rounded-full focus:outline-none focus:ring-2"
+              placeholder="message"
+            />
+            <button
+              onclick="sendMessage()"
+              class="submit px-6 py-2 bg-blue-500 text-white rounded-full"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- script file -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>
