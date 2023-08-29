@@ -1,37 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {io} from 'socket.io-client'
+import Join from './components/join'
+import Chat from './components/Chat'
 const socket = io('http://localhost:3001')
 
 function App() {
-  const [message,setMessage] = useState('')
-  const [messages,setMessages] = useState([])
-  const sendMessage =()=>{
-    socket.emit('send_message',{message})
-  }
-  socket.on('receive_message',(data)=>{
-    setMessages([...messages, data.message])
-  })
-  console.log(messages)
+  const [author,setAuthor] = useState('')
+  const [room,setRoom] = useState('')
+  const [joined,setJoined] = useState(false)
+
+
   return (
     <div
-      className='p-10'
+      className='h-screen flex justify-center items-center'
     >
-        <input 
-          type="text"
-          onChange={(e)=>setMessage(e.target.value)}
-          className='border p-2 rounded-lg'
-        />
-        <button
-          onClick={()=>sendMessage()}
-          className='bg-gray-100 p-2 m-2'
-        >
-          Send
-        </button>
-        <div>
-          {messages && 
-            messages.map((message,i)=><p key={i}>{message}</p>)
-          }
-        </div>
+      {!joined &&
+        <Join {...{socket,author,setAuthor,room,setRoom,joined,setJoined}}/>
+      }
+      {joined &&
+        <Chat {...{socket,author,setAuthor,room,setRoom,joined,setJoined}}/>
+      }
     </div>
   )
 }

@@ -8,7 +8,10 @@ const initSocket=(server)=>{
     });
     
     io.on('connection', (socket)=> {
-        console.log('a user connected ' + socket.id);
+        socket.on('join_chat',data=>{
+            socket.join(data.room)
+            console.log(`Join room ${}`)
+        })
     
     
         socket.on('disconnect',  (socket)=> {
