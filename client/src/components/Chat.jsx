@@ -1,15 +1,23 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
     const [messages,setMessages] = useState([])
     const [message,setMessage] = useState('')
-    const sendMessage=(e)=>{
+    const sendMessage=async(e)=>{
         e.preventDefault()
         if(!message){
             return
         }
-        socket.emit('send_message',{author,room,message})
+        const data = {
+            author,
+            room,
+            message,
+            time : new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes()
+        }
+        await socket.emit('send_message',data)
+        setMessages([...messages,data])
+        setMessage('')
     }
     const logout = ()=>{
         setAuthor('')
@@ -18,10 +26,12 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
     }
 
 
-    socket.on('recieved_message',(data)=>{
-        setMessages([...messages,data])
-    })
-
+    useEffect(()=>{
+        socket.on('recieved_message',(data)=>{
+            setMessages([...messages,data])
+        })
+    },[socket])
+    
     return (
         <div
             className="mx-4 w-full h-[80%] flex flex-col justify-between ring-2 ring-sky-500 rounded-xl"
@@ -46,6 +56,7 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
             >
                 <input 
                     type="text"
+                    value={message}
                     onChange={(e)=>setMessage(e.target.value)}
                     placeholder="write here..."
                     className="w-full h-full px-2 focus:outline-none"

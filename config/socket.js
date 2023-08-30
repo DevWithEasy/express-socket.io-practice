@@ -10,7 +10,11 @@ const initSocket=(server)=>{
     io.on('connection', (socket)=> {
         socket.on('join_chat',data=>{
             socket.join(data.room)
-            console.log(`Join room ${}`)
+            console.log(`Join room ${data.room}`)
+        })
+
+        socket.on('send_message',data=>{
+            socket.to(data.room).emit('recieved_message',data)
         })
     
     
