@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import ScrollableFeed from 'react-scrollable-feed'
 
 const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
     const [messages,setMessages] = useState([])
@@ -34,7 +35,7 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
     
     return (
         <div
-            className="mx-4 w-full h-[80%] flex flex-col justify-between ring-2 ring-sky-500 rounded-xl"
+            className="mx-4 w-full md:w-1/2 h-[80%] flex flex-col justify-between ring-2 ring-sky-500 rounded-xl"
         >
             <div
                 className="relative h-12 flex justify-center items-center text-center bg-sky-500 text-white font-bold rounded-t-xl"
@@ -47,8 +48,23 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
                     Logout
                 </button>
             </div>
-            <div>
-
+            <div
+                className="h-[cal(100% - 6rem)] flex-1 px-4"
+            >
+                <ScrollableFeed>
+                    {
+                        messages.map((message,i) =>
+                            <div
+                                key={i}
+                                className={`${message?.author == author ? 'text-red-500' :'text-blue-500 text-right'}`}
+                            >
+                                <span>
+                                    {message?.message}
+                                </span>
+                            </div>
+                        )
+                    }
+                </ScrollableFeed>
             </div>
             <form
             onSubmit={(e)=>sendMessage(e)}
