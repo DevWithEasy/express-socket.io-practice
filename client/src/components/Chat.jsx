@@ -26,13 +26,15 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
         setJoined(!joined)
     }
 
-
-    useEffect(()=>{
-        socket.on('recieved_message',(data)=>{
-            setMessages([...messages,data])
-        })
-    },[socket])
-    
+    socket.on('recieved_message',(data)=>{
+        setMessages([...messages,data])
+    })
+    // useEffect(()=>{
+    //     socket.on('recieved_message',(data)=>{
+    //         setMessages([...messages,data])
+    //     })
+    // },[socket])
+    console.log(messages.length)
     return (
         <div
             className="mx-4 w-full md:w-1/2 h-[80%] flex flex-col justify-between ring-2 ring-sky-500 rounded-xl"
@@ -49,18 +51,26 @@ const Chat = ({socket,author,setAuthor,room,setRoom,joined,setJoined}) => {
                 </button>
             </div>
             <div
-                className="h-[cal(100% - 6rem)] flex-1 px-4"
+                className="h-[cal(100% - 6rem)] overflow-auto"
             >
-                <ScrollableFeed>
+                <ScrollableFeed
+                    className=""
+                >
                     {
                         messages.map((message,i) =>
                             <div
                                 key={i}
-                                className={`${message?.author == author ? 'text-red-500' :'text-blue-500 text-right'}`}
+                                className={`${message?.author == author ? '' :' text-right'}`}
                             >
-                                <span>
-                                    {message?.message}
-                                </span>
+                                <div
+                                    className=""
+                                >
+                                    <span
+                                        className="bg-gray-50 px-2 py-1 rounded-lg"
+                                    >
+                                        {message?.message}
+                                    </span>
+                                </div>
                             </div>
                         )
                     }
