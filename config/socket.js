@@ -17,7 +17,6 @@ const initSocket=(server)=>{
             socket.to(data.room).emit('recieved_message',data)
         })
     
-    
         socket.on('disconnect',  (socket)=> {
             console.log('user disconnected' + socket.id);
         })
